@@ -1,0 +1,22 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>   
+    <form action="displayCategory" method="post" class="d-flex">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit" class="ml-2 btn btn-success" >Search</button>
+    </form> 
+    <div class="d-flex col-12">
+    {% for item in items %}
+            {% if item.status %}
+            <div class="card m-1 pt-1 align-items-center text-center" style="width: 30%; height: 50vh">
+                <h4>{{ item.title }}</h4>
+                <img src="{{ item.url }}" alt="{{ item.title }}" style="height: 60%">
+                <p>{{ item.description }}</p>
+                <a href="{% url 'listing' item.id %}">View Details</a>
+            </div>
+            {% endif %}
+    {% endfor %}
+    </div>
+{% endblock %}

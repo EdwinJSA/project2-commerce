@@ -1,0 +1,80 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Listing</h2>
+    {% if message %}
+        <div class="alert alert-primary" role="alert">
+            {{ message }}
+        </div>
+    {% endif %}
+
+    <div class="d-flex col-12">
+            <div class="col-6 pb-2">
+                <h4>{{ item.title }}</h4>
+                <img src="{{ item.url }}" alt="{{ item.title }}" style="height: 10rem">
+                <p>{{ item.description }}</p>
+                <p>Owner: {{ item.ownerName }}</p>
+                <p>Price: $ {{ item.price }}</p>
+                <p></p>
+
+                <div class="d-flex">
+                    <!--ESTO ES PARA CERRAR LA SUBASTA-->
+                    {% if allowed %}
+                    <form action="{% url 'closeListing' id=item.id %}" class="d-flex" method="post">
+                        {% csrf_token %}
+                        <button class="mt-2 mb-2 mr-2 btn btn-danger" type="submit">Close</button>
+                    </form>
+                    {% endif %}
+
+                    <!-- AGREGAR Y ELIMINAR ARTICULO DE LA LISTA DE VISTAS -->
+                    {% if item.status %}
+                    {% if user.is_authenticated %}
+                        {% if listingWatched %}
+                            <form action="{% url 'removeWatchlist' id=item.id %}" method="post">
+                                {% csrf_token %}
+                                <button class="mt-2 mb-2 btn btn-danger" type="submit">Remove</button>
+                            </form>
+                        {% else %}
+                            <form action="{% url 'addToWatchlist' id=item.id %}" method="post">
+                                {% csrf_token %}
+                                <button class="mt-2 mb-2 btn btn-success" type="submit">add</button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-6 pb-2">
+                <!--PUBLICAR BID Y COMENTARIOS-->
+                {% if user.is_authenticated %}
+                <h5>Post your offer</h5>
+                <form action="{% url 'addBid' id=item.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="text" name="newBid" id="newBid" required>
+                    <button class="btn btn-success" type="submit">Add Bid</button>
+                </form>
+                {% endif %}
+                    <div>
+                        <h5>Comments</h5>
+                        {% if user.is_authenticated %}
+                            <form action="{% url 'addComment' id=item.id %}" method="post">
+                                {% csrf_token %}
+                                <input type="text" name="newComment" id="newComment" required>
+                                <button class="btn btn-warning " type="submit">Add</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                    <div class="" style="max-height: 200px; overflow: auto">
+                        {% for cmt in comments %}
+                            <p><strong>{{ cmt.ownerName }}</strong>:{{ cmt.comment }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

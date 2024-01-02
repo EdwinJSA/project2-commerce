@@ -1,0 +1,20 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Watchlist</h2>
+    <div class="d-flex col-12">
+        {% for item in listUserWatchlist %}
+        <div class="card m-1 pt-1 align-items-center text-center" style="width: 30%; height: 50vh">
+            {% if item.price.ownerName == currentUser %}
+                <p class="alert alert-success" >You won the autions!</p>
+            {% endif %}
+            <h4>{{ item.title }}</h4>
+            <img src="{{ item.url }}" alt="{{ item.title }}" style="height: 60%">
+            <p>{{ item.description }}</p>
+            {% if item.status %}
+                <a href="{% url 'listing' item.id %}">View Details</a>
+            {% endif %}
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}

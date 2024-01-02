@@ -1,0 +1,14 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>New Listing</h2>
+
+    <div class="col-12 d-flex align-items-center justify-content-center">
+        <form method="POST" class="col-8">
+            {% csrf_token %}
+            {{ form }}
+            <button class="mt-2 btn btn-success" type="submit">Save</button>
+        </form>
+    </div>
+
+{% endblock %}
