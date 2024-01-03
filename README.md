@@ -21,7 +21,7 @@
     $ pip install -r requirements.txt
 ```
 
-> Later, you need make migrations, later you can run the server
+> Later, you need to make migrations, later you can run the server
 
 ```bash
     $ python manage.py makemigrations 
